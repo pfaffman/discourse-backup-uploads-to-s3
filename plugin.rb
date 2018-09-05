@@ -35,6 +35,7 @@ after_initialize do
       def self.s3_options
         {
           region: GlobalSetting.backup_uploads_to_s3_region,
+          endpoint: GlobalSetting.backup_uploads_to_s3_endpoint,
           access_key_id: GlobalSetting.backup_uploads_to_s3_access_key_id,
           secret_access_key: GlobalSetting.backup_uploads_to_s3_secret_access_key
         }
@@ -54,7 +55,8 @@ after_initialize do
           GlobalSetting.try(:backup_uploads_to_s3_bucket).presence &&
           GlobalSetting.try(:backup_uploads_to_s3_access_key_id).presence &&
           GlobalSetting.try(:backup_uploads_to_s3_secret_access_key).presence &&
-          GlobalSetting.try(:backup_uploads_to_s3_region).presence &&
+            ( GlobalSetting.try(:backup_uploads_to_s3_region).presence ||
+              GlobalSetting.try(:backup_uploads_to_s3_endpoint).presence ) &&
           GlobalSetting.try(:backup_uploads_to_s3_encryption_key).presence
         end
       end
